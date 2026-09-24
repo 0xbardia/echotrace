@@ -20,6 +20,8 @@ jobs:
           GENVM_VERSION=v0.6.0-rc6 uv tool run --from 'git+https://github.com/genlayerlabs/genvm-linter@28450e665666300fc648dbe495110dfd0cb6a7b4' genvm-lint download --version v0.6.0-rc6
           mkdir -p "$HOME/.cache/gltest-direct"
           cp "$HOME/.cache/genvm-linter/genvm-universal-v0.3.0-rc7.tar.xz" "$HOME/.cache/gltest-direct/"
+      - name: Verify cross-runtime source equivalence
+        run: uv run python scripts/verify_contract_equivalence.py
       - name: Lint both runner variants
         run: |
           GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint check contracts/echotrace.py
