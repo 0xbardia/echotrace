@@ -1,0 +1,5 @@
+# Direct-mode tests do not use these RPC entries. Artifacts are disposable.
+paths:
+  contracts: contracts
+  artifacts: .gltest-artifacts
+environment: .env

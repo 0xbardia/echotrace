@@ -1,0 +1,16 @@
+{
+  "name": "echotrace",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Deployment tooling for the EchoTrace Intelligent Contract",
+  "scripts": {
+    "exercise": "node scripts/exercise.mjs",
+    "exercise:studionet": "node scripts/exercise.mjs studionet",
+    "exercise:studio-dev": "node scripts/exercise.mjs studio-dev"
+  },
+  "dependencies": {
+    "genlayer-js": "1.1.8",
+    "genlayer-js-rc": "npm:genlayer-js@2.0.0-rc.1"
+  }
+}
