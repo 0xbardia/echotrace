@@ -1,0 +1,88 @@
+{
+  "network": "studio-dev",
+  "project": "EchoTrace",
+  "version": "1.0.0",
+  "environment": "Studio Development Preview",
+  "chainId": 61997,
+  "chain_id": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "explorer": "https://explorer-studio-dev.genlayer.com",
+  "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+  "contractPath": "contracts/echotrace_studio_dev.py",
+  "contractSha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
+  "contract_source": "contracts/echotrace_studio_dev.py",
+  "source_sha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
+  "gitCommit": "7f0c6d89924662b6660a20d8146099b44d93977f",
+  "git_commit": "7f0c6d89924662b6660a20d8146099b44d93977f",
+  "sdk": "genlayer-js@2.0.0-rc.1",
+  "transactionAbi": "v6",
+  "readVariant": "latest-final",
+  "startedAt": "2026-09-24T09:19:04.151Z",
+  "transactions": {
+    "deploy": {
+      "hash": "0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e",
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "contract_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "votes": {
+          "0x1dA3a7de8EA65A318bf88Eb63d3dC55295Dd257E": "agree",
+          "0x6760cDeC573cf38568C59872ee48B6fED41F8A4c": "agree",
+          "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "idle",
+          "0xA793D9dc0ED9edC1f9F732bB68b5D3AFA934F52D": "agree",
+          "0xcF5Fd792Df0Dc9d297af75c82B4A0011e8FA1A4A": "idle"
+        },
+        "leaders": [
+          {
+            "execution_result": "SUCCESS",
+            "vote": null,
+            "mode": "leader"
+          },
+          {
+            "execution_result": "ERROR",
+            "vote": "idle",
+            "mode": "validator"
+          }
+        ]
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    }
+  },
+  "reads": {},
+  "readMethods": {},
+  "contractAddress": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+  "contract_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+  "deployment_transaction": "0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e",
+  "finalized": true,
+  "lifecycle_test": null,
+  "read_methods_passed": 0,
+  "read_methods_total": 0,
+  "certification_status": "BLOCKED",
+  "smoke": {
+    "urls": [
+      "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+      "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675"
+    ],
+    "note": "A public Tribune Content Agency article and its ArcaMax published copy. They are used as a real provenance case; hosted consensus determines the stored relation."
+  },
+  "preflight": {
+    "rpcChainId": 61997,
+    "sdkChainId": 61997,
+    "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+    "balanceWei": "0x56bc75e2d63100064",
+    "verifiedAt": "2026-09-24T17:52:43.979Z"
+  },
+  "completedAt": "2026-09-24T17:57:44.171Z",
+  "certification_blocker": "gen_getContractSchema failed: {\"code\":-32029,\"message\":\"Rate limit exceeded: 5000 requests per day\",\"data\":{\"bucket\":\"standard\",\"window\":\"day\",\"limit\":5000,\"current\":5000,\"retry_after_seconds\":11228}}",
+  "deployment_certification": {
+    "status": "PASS",
+    "deployment_finalized": true,
+    "schema_retrieved": false,
+    "read_methods_passed": 0,
+    "read_methods_total": 0,
+    "note": "The deployment receipt finalized with MAJORITY_AGREE. The daily quota blocked schema retrieval before lifecycle and read certification."
+  }
+}

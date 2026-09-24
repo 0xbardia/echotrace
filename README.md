@@ -66,18 +66,34 @@ Leader and validator entry points differ by network. Studionet uses `gl.vm.run_n
 
 ## Contract methods
 
+The zero-argument `EchoTrace()` constructor initializes empty storage; it is not listed among `gen_getContractSchema` methods. The deployed calldata schema reports `u32` parameters and returns as `int`, and structured Python dictionaries as generic `dict`.
+
 Writes:
 
 | Method | Rule |
 | --- | --- |
-| `create_assessment(title, context) -> u32` | Opens the next monotonic id. Title required, max 120. Context max 400. |
-| `add_source(assessment_id, url, label) -> u32` | Creator, draft only. HTTPS, no userinfo, no fragment, host checks, no duplicate canonical URL. Label max 80. Cap 6 sources. |
-| `seal_assessment(assessment_id)` | Creator, draft, at least 2 sources. |
-| `analyze_sources(assessment_id)` | Anyone, sealed, not yet analyzed. |
+| `create_assessment(title: str, context: str) -> u32` | Opens the next monotonic id. Title required, max 120. Context max 400. |
+| `add_source(assessment_id: u32, url: str, label: str) -> u32` | Creator, draft only. HTTPS, no userinfo, no fragment, host checks, no duplicate canonical URL. Label max 80. Cap 6 sources. |
+| `seal_assessment(assessment_id: u32) -> None` | Creator, draft, at least 2 sources. |
+| `analyze_sources(assessment_id: u32) -> None` | Anyone, sealed, not yet analyzed. |
 
 Views (`@gl.public.view`):
 
-`get_contract_info`, `get_assessment_count`, `get_assessment`, `get_assessment_status`, `get_source_count`, `get_source`, `get_sources`, `get_relation`, `get_relations`, `get_analysis_summary`, `get_provenance_group`, `get_provenance_groups`, `map_evidence_flags`.
+| Method | Return |
+| --- | --- |
+| `get_contract_info()` | `dict[str, Any]` |
+| `get_assessment_count()` | `u32` |
+| `get_assessment(assessment_id: u32)` | `dict[str, Any]` |
+| `get_assessment_status(assessment_id: u32)` | `str` |
+| `get_source_count(assessment_id: u32)` | `u32` |
+| `get_source(assessment_id: u32, source_id: u32)` | `dict[str, Any]` |
+| `get_sources(assessment_id: u32)` | `list[dict[str, Any]]` |
+| `get_relation(assessment_id: u32, source_a: u32, source_b: u32)` | `dict[str, Any]` |
+| `get_relations(assessment_id: u32)` | `list[dict[str, Any]]` |
+| `get_analysis_summary(assessment_id: u32)` | `dict[str, Any]` |
+| `get_provenance_group(assessment_id: u32, group_id: u32)` | `dict[str, Any]` |
+| `get_provenance_groups(assessment_id: u32)` | `list[dict[str, Any]]` |
+| `map_evidence_flags(explicit_attribution: str, syndication: str, derivative: str, shared_upstream: str, independent_primary: str, evidence: str)` | `str` |
 
 Unknown ids raise a deliberate `UserError` (`assessment not found`, `source not found`, `relation not found`, `group not found`). They are not raw index crashes. Reads that need an analysis before `ANALYZED` raise `analysis not ready`. Hosted simulators sometimes wrap that `UserError` text; the deployments record the wrapper string actually returned.
 
@@ -106,6 +122,7 @@ This does not make web content trustworthy, and it does not stop a page from cha
 - Grounding is stem-and-quote based. A real derivation that does not use the required phrases becomes `UNKNOWN`, on purpose.
 - The submitted URL is checked for SSRF. If the GenVM web client follows a redirect, this contract does not see the final hop.
 - At most six sources. Pair count is `n*(n-1)/2`.
+- Assessments are permanent and permissionless. The `u32` ID counter prevents wraparound but is not a small usage quota; total storage grows with assessments, so deployments rely on network fee and state policies.
 - Analysis is one-shot. A later page edit does not refresh the graph.
 - Studionet and Studio development preview do not accept the same `py-genlayer` runner. The decision logic is shared. The files are not byte-identical. See below.
 
@@ -115,22 +132,25 @@ Direct-mode tests use mocked web pages and model responses. They do not call liv
 
 ```bash
 uv sync --locked --group test
+GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint download --version v0.3.0-rc7
+GENVM_VERSION=v0.6.0-rc6 uv tool run --from 'git+https://github.com/genlayerlabs/genvm-linter@28450e665666300fc648dbe495110dfd0cb6a7b4' genvm-lint download --version v0.6.0-rc6
 GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint check contracts/echotrace.py
 GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint typecheck contracts/echotrace.py
-uv tool run --from 'git+https://github.com/genlayerlabs/genvm-linter@28450e665666300fc648dbe495110dfd0cb6a7b4' genvm-lint check contracts/echotrace_studio_dev.py
-GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint download --version v0.3.0-rc7
+GENVM_VERSION=v0.6.0-rc6 uv tool run --from 'git+https://github.com/genlayerlabs/genvm-linter@28450e665666300fc648dbe495110dfd0cb6a7b4' genvm-lint check contracts/echotrace_studio_dev.py
 mkdir -p "$HOME/.cache/gltest-direct"
 cp "$HOME/.cache/genvm-linter/genvm-universal-v0.3.0-rc7.tar.xz" "$HOME/.cache/gltest-direct/"
 uv run pytest -rA
 ```
 
-The cache copy works around `genlayer-test==0.29.2` looking for the former GenVM archive filename. The linter downloads the current runner archive and stores it under that compatibility name. Python is 3.12; exact test dependencies are locked in `uv.lock`. The preview linter is pinned to its public RC commit because the preview runner is not in the stable linter's pinned release.
+The cache copy works around `genlayer-test==0.29.2` looking for the former GenVM archive filename. Studionet checks use runner `v0.3.0-rc7`; preview checks use runner `v0.6.0-rc6` with the preview linter pinned to its public RC commit. Both bundles are downloaded before lint so CI does not depend on a prewarmed cache. Python is 3.12; exact test dependencies are locked in `uv.lock`.
 
 The suite covers lifecycle and authorization, URL bounds and parser edge cases, serialization, relation semantics, group derivation, prompt injection, retrieval failures, malformed model output, validator disagreement, and a schema-valid but semantically wrong leader result.
 
 ## Deployment
 
-The current audit is regenerating hosted deployments from the audited source. Addresses from earlier smoke runs point to previous source hashes and are superseded; do not use them as this release's deployment evidence. The final addresses, source hashes, transaction IDs, deployed schemas, code comparisons, and per-method certification results will be recorded in [docs/deployments.md](docs/deployments.md) and `deployments/` only after the hosted transactions finalize.
+The frozen Studionet source is deployed at `0x17ED3D4Cd4Fa0970F854829299283e6004836237` on chain `61999`, with source SHA-256 `df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4`. Its hosted lifecycle finalized as `SYNDICATED` for two retrieved sources, grouped as one confirmed origin. A complete pass exercised all 13 public reads against finalized state. Later read-only refreshes encountered the shared RPC quota; they made no writes and returned no contradictory values. A nonexistent assessment read was rejected with the Studio wrapper's generic `execution failed` message; the wrapper did not expose the underlying `assessment not found` reason, which direct-mode tests verify.
+
+Studio development preview uses chain `61997` and `contracts/echotrace_studio_dev.py` (SHA-256 `1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776`). Deployment finalized at `0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F` in transaction `0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e`; schema retrieval and the hosted lifecycle/read certification remain blocked by the canonical RPC's 5000-requests/day quota. See [docs/deployments.md](docs/deployments.md) and the environment records in `deployments/` for the captured results.
 
 The two Studio environments currently require distinct runner pins. Both contract files are in the same audited Git revision and share the provenance algorithm, state layout, validation, and consensus comparison. The environment-specific runner import/base class and nondeterministic entry point mean their source-file SHA-256 values differ. Studionet uses chain 61999 and `https://studio.genlayer.com/api`; Studio development preview uses chain 61997 and `https://studio-dev.genlayer.com/api` and may be reset by its operators.
 
@@ -144,7 +164,9 @@ ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studionet
 ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studio-dev
 ```
 
-The script selects the matching stable or RC JavaScript SDK, verifies the RPC chain ID before signing, checks the quoted fee against the deployer balance where the network charges one, waits for finalization, fetches deployed code/schema, and checks every actual read method. Do not put the key file in the repository.
+The script selects the matching stable or RC JavaScript SDK, verifies the RPC chain ID before signing, checks the quoted fee against the deployer balance where the network charges one, waits for finalization, fetches deployed code/schema, and checks every actual read method. It serializes RPC requests at 20-second intervals to stay below the observed shared hourly and daily refill limits. Do not put the key file in the repository.
+
+To retry certification of an already analyzed assessment after an RPC read limit, set `ECHOTRACE_CONTRACT` and `ECHOTRACE_ASSESSMENT_ID` to the deployed address and assessment ID. The runner then reads that finalized lifecycle instead of creating another.
 
 ## Example
 
@@ -173,10 +195,10 @@ docs/architecture.md
 docs/consensus.md
 docs/security.md
 docs/deployments.md
-deployments/*.json                  Finalized tx hashes and latest-final reads
+deployments/*.json                  Environment deployment and certification evidence
 scripts/exercise.mjs                Deploy and exercise both networks
 ```
 
 ## Release status
 
-Version 1.0.0 is the intended release. Hosted certification and publication are in progress; this section and the deployment manifests will contain only finalized evidence before release.
+Version 1.0.0 is the candidate version, not a published release. The GitHub repository has no release tag yet. The public release is withheld until both hosted deployments are finalized and every public read method passes on each.

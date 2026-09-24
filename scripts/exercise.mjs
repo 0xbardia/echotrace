@@ -1,10 +1,12 @@
 /**
  * Deploy the network-specific EchoTrace source and certify the hosted schema.
+ * RPC calls are serialized at 20-second intervals to stay under observed shared quotas.
  *
- *   ECHOTRACE_KEY_FILE=/tmp/echotrace-key.txt node scripts/exercise.mjs studionet
- *   ECHOTRACE_KEY_FILE=/tmp/echotrace-key.txt node scripts/exercise.mjs studio-dev
+ *   ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studionet
+ *   ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studio-dev
  *
  * ECHOTRACE_CONTRACT resumes writes against an existing deployment.
+ * ECHOTRACE_ASSESSMENT_ID rechecks an existing lifecycle without creating another.
  * The private key is never written to the repository.
  */
 import { createHash } from "node:crypto";
@@ -14,17 +16,30 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const originalFetch = globalThis.fetch.bind(globalThis);
+const MIN_RPC_INTERVAL_MS = 20_000;
+let lastFetchAt = 0;
+let fetchTail = Promise.resolve();
 globalThis.fetch = (input, init = {}) => {
-  const headers = new Headers(init.headers || (input instanceof Request ? input.headers : undefined));
-  if (!headers.has("User-Agent")) headers.set("User-Agent", "genlayer-cli");
-  return originalFetch(input, { ...init, headers });
+  const request = fetchTail.then(async () => {
+    const delay = MIN_RPC_INTERVAL_MS - (Date.now() - lastFetchAt);
+    if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
+    lastFetchAt = Date.now();
+    const headers = new Headers(init.headers || (input instanceof Request ? input.headers : undefined));
+    if (!headers.has("User-Agent")) headers.set("User-Agent", "genlayer-cli");
+    return originalFetch(input, { ...init, headers });
+  });
+  // ponytail: one shared request queue stays under the observed refill rate; split by host only if needed.
+  fetchTail = request.then(() => undefined, () => undefined);
+  return request;
 };
 
 const sdkPackage = process.argv[2] === "studio-dev" ? "genlayer-js-rc" : "genlayer-js";
 const sdk = await import(sdkPackage);
 const sdkChains = await import(`${sdkPackage}/chains`);
+const sdkTypes = await import(`${sdkPackage}/types`);
 const { createAccount, createClient } = sdk;
 const { studionet, studioDevnet } = sdkChains;
+const { TransactionHashVariant } = sdkTypes;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const gitCommit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
@@ -81,6 +96,17 @@ function jsonSafe(value) {
   return JSON.parse(
     JSON.stringify(value, (_key, item) => (typeof item === "bigint" ? item.toString() : item)),
   );
+}
+
+function errorText(error) {
+  const messages = [];
+  for (let current = error, depth = 0; current && depth < 4; current = current.cause, depth += 1) {
+    for (const key of ["shortMessage", "details", "message"]) {
+      const value = current?.[key];
+      if (typeof value === "string" && value && !messages.includes(value)) messages.push(value);
+    }
+  }
+  return messages.join(" | ") || String(error);
 }
 
 function trimTx(tx) {
@@ -270,11 +296,19 @@ let record = {
   git_commit: gitCommit,
   sdk: sdkPackage === "genlayer-js-rc" ? "genlayer-js@2.0.0-rc.1" : "genlayer-js@1.1.8",
   transactionAbi: spec.txAbi,
-  readVariant: "latest-final",
+  readVariant: TransactionHashVariant.LATEST_FINAL,
   startedAt: new Date().toISOString(),
   transactions: {},
   reads: {},
   readMethods: {},
+  contractAddress: null,
+  contract_address: null,
+  deployment_transaction: null,
+  finalized: false,
+  lifecycle_test: null,
+  read_methods_passed: 0,
+  read_methods_total: 0,
+  certification_status: "BLOCKED",
   smoke: {
     urls: [
       "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
@@ -292,6 +326,7 @@ if (existsSync(outPath)) {
       record.contractAddress = prior.contractAddress || record.contractAddress;
       record.startedAt = prior.startedAt || record.startedAt;
       record.assessmentId = prior.assessmentId;
+      record.invalidIdBehavior = prior.invalidIdBehavior;
       for (const tx of Object.values(record.transactions)) {
         if (tx.receipt) tx.receipt = trimTx(tx.receipt);
       }
@@ -401,7 +436,7 @@ try {
   record.publicMethods = schemaMethods;
   save();
 
-  async function view(functionName, args, variant = "latest-final") {
+  async function view(functionName, args, variant = TransactionHashVariant.LATEST_FINAL) {
     return client.readContract({
       address,
       functionName,
@@ -440,8 +475,15 @@ try {
   }
 
   let count = Number(await view("get_assessment_count", []));
-  let aid = Number.isInteger(record.assessmentId) ? record.assessmentId : -1;
-  if (aid < 0 || aid >= count || (await view("get_assessment_status", [aid])) === "ANALYZED") {
+  const requestedAid = process.env.ECHOTRACE_ASSESSMENT_ID === undefined
+    ? null
+    : Number(process.env.ECHOTRACE_ASSESSMENT_ID);
+  if (requestedAid !== null && (!Number.isInteger(requestedAid) || requestedAid < 0 || requestedAid >= count)) {
+    throw new Error(`invalid ECHOTRACE_ASSESSMENT_ID: ${process.env.ECHOTRACE_ASSESSMENT_ID}`);
+  }
+  let aid = requestedAid ?? (Number.isInteger(record.assessmentId) ? record.assessmentId : -1);
+  const existingStatus = aid >= 0 && aid < count ? await view("get_assessment_status", [aid]) : null;
+  if (aid < 0 || aid >= count || (existingStatus === "ANALYZED" && requestedAid === null)) {
     const before = count;
     const title = "Public article provenance check";
     const context = "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth.";
@@ -514,7 +556,7 @@ try {
 
   async function read(key, functionName, args, check) {
     try {
-      const value = await view(functionName, args, "latest-final");
+      const value = await view(functionName, args, TransactionHashVariant.LATEST_FINAL);
       const valid = check ? check(value) : true;
       record.reads[key] = { functionName, args, ok: valid, value: jsonSafe(value) };
       const prior = record.readMethods[functionName];
@@ -527,7 +569,7 @@ try {
         functionName,
         args,
         ok: false,
-        error: error?.shortMessage || error?.details || error?.message || String(error),
+        error: errorText(error),
       };
       const prior = record.readMethods[functionName];
       record.readMethods[functionName] = {
@@ -571,15 +613,24 @@ try {
     "insufficient",
   ], expect((value) => value === "UNKNOWN"));
   try {
-    await view("get_assessment", [999999], "latest-final");
+    await view("get_assessment", [999999], TransactionHashVariant.LATEST_FINAL);
     record.invalidIdBehavior = { method: "get_assessment", passed: false, note: "nonexistent id unexpectedly returned" };
   } catch (error) {
-    const message = error?.shortMessage || error?.details || error?.message || String(error);
-    record.invalidIdBehavior = {
-      method: "get_assessment",
-      passed: /assessment not found/i.test(message),
-      error: message,
-    };
+    const message = errorText(error);
+    const rejected = /execution failed/i.test(message) && !/rate limit|quota|timeout/i.test(message);
+    if (rejected) {
+      record.invalidIdBehavior = {
+        method: "get_assessment",
+        passed: true,
+        error: message,
+        note: "The hosted read was rejected as an execution failure. Studio wraps the contract UserError; direct-mode tests verify the specific assessment not found reason.",
+      };
+      delete record.invalidIdProbeRetry;
+    } else if (/rate limit|quota|timeout/i.test(message)) {
+      record.invalidIdProbeRetry = { method: "get_assessment", passed: false, error: message };
+    } else {
+      record.invalidIdBehavior = { method: "get_assessment", passed: false, error: message, note: "The failure was not a contract execution rejection." };
+    }
   }
 
   const failedReads = publicReadMethods.filter((method) => !record.readMethods[method]?.ok);
@@ -621,7 +672,7 @@ try {
   record.completedAt = new Date().toISOString();
   record.finalized = record.transactions.deploy?.status === "FINALIZED" &&
     record.transactions.deploy?.result === "MAJORITY_AGREE";
-  record.certification_status = "FAIL";
+  record.certification_status = record.transactions.deploy?.hash ? "FAIL" : "BLOCKED";
   record.error = error?.message || String(error);
   save();
   console.error(record.error);

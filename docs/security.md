@@ -107,12 +107,15 @@ Nondeterministic closures do not touch storage. URLs are copied to memory first,
 
 ## Bounds
 
-Caps are part of the security model. They keep prompt size, pair count, and storage growth finite: at most 6 sources, 15 relations, 60,000 raw response characters considered, 5,000 normalized characters per page, 4,000 characters per model evidence string, 200,000 characters for string-form model JSON, and 64-character reason codes. The GenVM response body is already fetched before EchoTrace clips it; the contract does not enforce a network response-byte cap. Script and style blocks truncated before their closing tags are discarded through the inspected window. `get_sources` and `get_relations` cannot be asked to walk an unbounded map.
+Caps are part of the per-assessment security model: at most 6 sources, 15 relations, 60,000 raw response characters considered, 5,000 normalized characters per page, 4,000 characters per model evidence string, 200,000 characters for string-form model JSON, and 64-character reason codes. The GenVM response body is already fetched before EchoTrace clips it; the contract does not enforce a network response-byte cap. Script and style blocks truncated before their closing tags are discarded through the inspected window. `get_sources` and `get_relations` operate on one bounded assessment and cannot be asked to walk the global maps.
+
+Total contract state still grows as permissionless users create assessments. `assessment_count` has a `u32` lifetime ceiling, but this is not a practical small quota; assessments cannot be deleted, and there is no per-creator rate cap. Permissionless deployments must rely on their network's transaction fee and state policies to price that growth. EchoTrace does not claim to prevent registry-wide storage spam.
 
 ## Hosted-network notes
 
 - The exercise script sends `User-Agent: genlayer-cli`. The studio RPCs return 403 to clients that omit it.
-- The preview runner accepts fee-funded writes. The exercise script quotes each concrete write with the matching RC SDK, checks the deployer balance against the quoted fee, and submits the quote. The SDK also supports a zero fee when the active Studio policy returns one.
+- The exercise script serializes outbound RPC requests at a 20-second minimum interval, below the hourly and daily refill rates observed during certification.
+- The v0.6 preview interface uses the matching RC SDK fee structure. The exercise script quotes each concrete write and checks the deployer balance before submission; it does not hardcode a large execution budget. In this audit the fee quote succeeded, but the RPC rate-limited gas estimation and transaction submission, so no current preview write was finalized. The SDK supports a zero fee when the active Studio policy returns one.
 - genlayer-js 1.1.8 cannot form the preview fee struct. genlayer-js 2.0.0-rc.1 against Studionet did not produce usable write transactions in this review. Each network is exercised with the SDK that matches it.
 - Private keys, keystores, and `.env` files are gitignored. The deployer address in the deployment JSON is public. The key is not in the repository.
 - `sim_fundAccount` is a testnet faucet, not a product feature.

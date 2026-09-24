@@ -1,0 +1,267 @@
+{
+  "ctor": {
+    "params": [],
+    "kwparams": {}
+  },
+  "methods": {
+    "add_source": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "url",
+          "string"
+        ],
+        [
+          "label",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "int",
+      "payable": false
+    },
+    "analyze_sources": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "null",
+      "payable": false
+    },
+    "create_assessment": {
+      "params": [
+        [
+          "title",
+          "string"
+        ],
+        [
+          "context",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "int",
+      "payable": false
+    },
+    "get_analysis_summary": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_assessment": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_assessment_count": {
+      "params": [],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "int"
+    },
+    "get_assessment_status": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "get_contract_info": {
+      "params": [],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_provenance_group": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "group_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_provenance_groups": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    "get_relation": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_a",
+          "int"
+        ],
+        [
+          "source_b",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_relations": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    "get_source": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_source_count": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "int"
+    },
+    "get_sources": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    "map_evidence_flags": {
+      "params": [
+        [
+          "explicit_attribution",
+          "string"
+        ],
+        [
+          "syndication",
+          "string"
+        ],
+        [
+          "derivative",
+          "string"
+        ],
+        [
+          "shared_upstream",
+          "string"
+        ],
+        [
+          "independent_primary",
+          "string"
+        ],
+        [
+          "evidence",
+          "string"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": true,
+      "ret": "string"
+    },
+    "seal_assessment": {
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "kwparams": {},
+      "readonly": false,
+      "ret": "null",
+      "payable": false
+    }
+  }
+}

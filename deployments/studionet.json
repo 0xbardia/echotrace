@@ -1,0 +1,431 @@
+{
+  "network": "studionet",
+  "project": "EchoTrace",
+  "version": "1.0.0",
+  "environment": "Stable Studio",
+  "chainId": 61999,
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com",
+  "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+  "contractPath": "contracts/echotrace.py",
+  "contractSha256": "df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4",
+  "contract_source": "contracts/echotrace.py",
+  "source_sha256": "df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4",
+  "gitCommit": "7f0c6d89924662b6660a20d8146099b44d93977f",
+  "git_commit": "7f0c6d89924662b6660a20d8146099b44d93977f",
+  "sdk": "genlayer-js@1.1.8",
+  "transactionAbi": "v5",
+  "readVariant": "latest-final",
+  "startedAt": "2026-09-24T09:12:10.338Z",
+  "transactions": {
+    "deploy": {
+      "hash": "0xfeab866471129d04840e9dc76e1f5da9a6b6a10536c4870bf39f21f415c4d50f",
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "create_assessment_0": {
+      "hash": "0xe452712a43e861e274ca1c90bdabf9bb7df2d1b4e6205644ac263a4c58db7506",
+      "functionName": "create_assessment",
+      "args": [
+        "Public article provenance check",
+        "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth."
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "add_source_0_0": {
+      "hash": "0xc60199050e5a26953fe464d900daf8e0b600069c47a27c36dc27f190f2356bc6",
+      "functionName": "add_source",
+      "args": [
+        0,
+        "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+        "Tribune Content Agency"
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "add_source_0_1": {
+      "hash": "0x99d52989da05bff68795bc6e29000ea73a7a42097e604293e40406b6a46536bc",
+      "functionName": "add_source",
+      "args": [
+        0,
+        "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675",
+        "ArcaMax"
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "seal_assessment_0": {
+      "hash": "0x9481c19148ba4b944b7a660147ab13804fb048c3d9139b62dddd8ea6d87d3b56",
+      "functionName": "seal_assessment",
+      "args": [
+        0
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "analyze_sources_0": {
+      "hash": "0x11e6a432765a126f8a3b8476d8777c04ed2390c0d6be6f90b9f0e99f042df8cf",
+      "functionName": "analyze_sources",
+      "args": [
+        0
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 6,
+        "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    }
+  },
+  "reads": {},
+  "readMethods": {},
+  "contractAddress": "0x17ED3D4Cd4Fa0970F854829299283e6004836237",
+  "contract_address": "0x17ED3D4Cd4Fa0970F854829299283e6004836237",
+  "deployment_transaction": "0xfeab866471129d04840e9dc76e1f5da9a6b6a10536c4870bf39f21f415c4d50f",
+  "finalized": true,
+  "lifecycle_test": null,
+  "read_methods_passed": 13,
+  "read_methods_total": 13,
+  "certification_status": "PASS",
+  "certification_evidence": {
+    "status": "PASS",
+    "read_variant": "latest-final",
+    "assessment_id": 0,
+    "read_methods": [
+      "get_analysis_summary",
+      "get_assessment",
+      "get_assessment_count",
+      "get_assessment_status",
+      "get_contract_info",
+      "get_provenance_group",
+      "get_provenance_groups",
+      "get_relation",
+      "get_relations",
+      "get_source",
+      "get_source_count",
+      "get_sources",
+      "map_evidence_flags"
+    ],
+    "note": "All 13 reads passed in an earlier finalized-state run. A later read-only refresh verified deployed code/schema, then hit the canonical daily quota before its first view call; no source or state changed."
+  },
+  "smoke": {
+    "urls": [
+      "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+      "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675"
+    ],
+    "note": "A public Tribune Content Agency article and its ArcaMax published copy. They are used as a real provenance case; hosted consensus determines the stored relation."
+  },
+  "assessmentId": 0,
+  "invalidIdBehavior": {
+    "method": "get_assessment",
+    "passed": true,
+    "error": "Missing or invalid parameters.\nDouble check you have provided the correct parameters. | execution failed | Missing or invalid parameters.\nDouble check you have provided the correct parameters.\n\nDetails: execution failed\nVersion: viem@2.56.8",
+    "note": "The hosted read was rejected as an execution failure. Studio wraps the contract UserError; direct-mode tests verify the specific assessment not found reason."
+  },
+  "preflight": {
+    "rpcChainId": 61999,
+    "sdkChainId": 61999,
+    "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+    "balanceWei": "0xad78ebc5ac6200000",
+    "verifiedAt": "2026-09-24T17:49:45.559Z"
+  },
+  "deployedCodeSha256": "df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4",
+  "deployedCodeMatchesSource": true,
+  "schemaPath": "deployments/schema/studionet.json",
+  "schemaSha256": "fe30521139bedc6b80b668b77598b9973f9f87be856574189cc1a75776a5bf57",
+  "publicMethods": [
+    {
+      "name": "add_source",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "url",
+          "string"
+        ],
+        [
+          "label",
+          "string"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "analyze_sources",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "null"
+    },
+    {
+      "name": "create_assessment",
+      "readonly": false,
+      "params": [
+        [
+          "title",
+          "string"
+        ],
+        [
+          "context",
+          "string"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "get_analysis_summary",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_assessment",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_assessment_count",
+      "readonly": true,
+      "params": [],
+      "ret": "int"
+    },
+    {
+      "name": "get_assessment_status",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "string"
+    },
+    {
+      "name": "get_contract_info",
+      "readonly": true,
+      "params": [],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_provenance_group",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "group_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_provenance_groups",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "get_relation",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_a",
+          "int"
+        ],
+        [
+          "source_b",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_relations",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "get_source",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_source_count",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "get_sources",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "map_evidence_flags",
+      "readonly": true,
+      "params": [
+        [
+          "explicit_attribution",
+          "string"
+        ],
+        [
+          "syndication",
+          "string"
+        ],
+        [
+          "derivative",
+          "string"
+        ],
+        [
+          "shared_upstream",
+          "string"
+        ],
+        [
+          "independent_primary",
+          "string"
+        ],
+        [
+          "evidence",
+          "string"
+        ]
+      ],
+      "ret": "string"
+    },
+    {
+      "name": "seal_assessment",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "null"
+    }
+  ],
+  "completedAt": "2026-09-24T17:50:45.815Z",
+  "refresh_status": "BLOCKED_BY_QUOTA",
+  "refresh_error": "An unknown RPC error occurred.\n\nDetails: Rate limit exceeded: 5000 requests per day\nVersion: viem@2.56.8",
+  "refresh_retry_after_seconds": 13336
+}

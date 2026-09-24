@@ -161,6 +161,8 @@ Consensus cost is bounded on purpose.
 
 Six sources produce 15 pairs and at most one model call per analyze, because every `OK`/`OK` pair is packed into a single JSON prompt. Failed pairs are omitted from that prompt. The runtime has already retrieved the response body before EchoTrace considers the first 60,000 characters; the contract does not set an HTTP byte limit. Script or style content whose closing tag falls beyond that window is removed through the window end rather than passed as evidence.
 
+These bounds limit work per assessment, not lifetime storage. Anyone may create assessments until the `u32` counter limit; there is no delete path or per-creator quota. A deployment with low or zero transaction fees can therefore accumulate storage, so callers and networks must account for the chain's fee and state policies.
+
 ## Runner split
 
 `contracts/echotrace.py` is the file direct-mode tests and Studionet execute:
