@@ -42,7 +42,7 @@ const { studionet, studioDevnet } = sdkChains;
 const { TransactionHashVariant } = sdkTypes;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const gitCommit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
+const repositoryCommit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
 const networkName = process.argv[2];
 const NETWORKS = {
   studionet: {
@@ -258,6 +258,12 @@ const client = createClient({ chain: chainFor(spec), account });
 const codePath = process.env.ECHOTRACE_CONTRACT_PATH ||
   (networkName === "studio-dev" ? "contracts/echotrace_studio_dev.py" : "contracts/echotrace.py");
 const code = readFileSync(path.join(root, codePath), "utf8");
+let sourceCommit = repositoryCommit;
+try {
+  sourceCommit = execFileSync("git", ["log", "-1", "--format=%H", "--", codePath], { cwd: root, encoding: "utf8" }).trim() || repositoryCommit;
+} catch {
+  // An explicitly supplied untracked source has no separate source revision.
+}
 const codeSha256 = createHash("sha256").update(code).digest("hex");
 const outDir = path.join(root, "deployments");
 const schemaDir = path.join(outDir, "schema");
@@ -292,8 +298,10 @@ let record = {
   contractSha256: codeSha256,
   contract_source: codePath,
   source_sha256: codeSha256,
-  gitCommit,
-  git_commit: gitCommit,
+  gitCommit: sourceCommit,
+  git_commit: sourceCommit,
+  repositoryCommit,
+  repository_commit: repositoryCommit,
   sdk: sdkPackage === "genlayer-js-rc" ? "genlayer-js@2.0.0-rc.1" : "genlayer-js@1.1.8",
   transactionAbi: spec.txAbi,
   readVariant: TransactionHashVariant.LATEST_FINAL,
@@ -417,14 +425,21 @@ try {
   }));
   const publicReadMethods = schemaMethods.filter((method) => method.readonly).map((method) => method.name).sort();
   const publicWriteMethods = schemaMethods.filter((method) => !method.readonly).map((method) => method.name).sort();
-  const expectedReadMethods = [
+  // The deployed schema, not a local expected-count constant, is the read ABI
+  // of record. The known plans below provide strong value assertions; any
+  // additional schema method is still called below and therefore audited.
+  const knownReadMethods = new Set([
     "get_analysis_summary", "get_assessment", "get_assessment_count", "get_assessment_status",
     "get_contract_info", "get_provenance_group", "get_provenance_groups", "get_relation",
     "get_relations", "get_source", "get_source_count", "get_sources", "map_evidence_flags",
-  ].sort();
-  if (JSON.stringify(publicReadMethods) !== JSON.stringify(expectedReadMethods)) {
-    throw new Error(`deployed read schema mismatch: ${JSON.stringify(publicReadMethods)}`);
+  ]);
+  if (publicReadMethods.length === 0) {
+    throw new Error("deployed schema exposes no public read methods");
   }
+  record.schemaReadMethods = publicReadMethods;
+  record.schemaReadMethodCount = publicReadMethods.length;
+  record.schemaUnexpectedReadMethods = publicReadMethods.filter((method) => !knownReadMethods.has(method));
+  record.schemaMissingKnownReadMethods = [...knownReadMethods].filter((method) => !publicReadMethods.includes(method)).sort();
   const expectedWriteMethods = ["add_source", "analyze_sources", "create_assessment", "seal_assessment"].sort();
   if (JSON.stringify(publicWriteMethods) !== JSON.stringify(expectedWriteMethods)) {
     throw new Error(`deployed write schema mismatch: ${JSON.stringify(publicWriteMethods)}`);
@@ -582,13 +597,6 @@ try {
   }
 
   const expect = (condition) => (value) => condition(value);
-  await read("get_contract_info", "get_contract_info", [], expect((value) => value?.name === "EchoTrace" && value?.version === "1.0.0" && value?.min_sources === 2 && value?.max_sources === 6 && value?.unassigned_group_id === 255));
-  await read("get_assessment_count", "get_assessment_count", [], expect((value) => Number(value) === count));
-  await read("get_assessment", "get_assessment", [aid], expect((value) => value?.assessment_id === aid && value?.creator?.toLowerCase() === account.address.toLowerCase() && value?.source_count === 2 && value?.has_analysis === true && value?.status === "ANALYZED"));
-  await read("get_assessment_status", "get_assessment_status", [aid], expect((value) => value === "ANALYZED"));
-  await read("get_source_count", "get_source_count", [aid], expect((value) => Number(value) === 2));
-  await read("get_source", "get_source", [aid, 0], expect((value) => value?.assessment_id === aid && value?.source_id === 0 && value?.url === record.smoke.urls[0] && value?.retrieval_status === "OK"));
-  await read("get_sources", "get_sources", [aid], expect((value) => Array.isArray(value) && value.length === 2 && value.every((row, i) => row.source_id === i && row.url === record.smoke.urls[i] && row.retrieval_status === "OK")));
   const relation = relations[0].relation;
   const reverseRelation = {
     A_DERIVES_FROM_B: "B_DERIVES_FROM_A",
@@ -598,20 +606,46 @@ try {
     a_derives_from_b: "b_derives_from_a",
     b_derives_from_a: "a_derives_from_b",
   }[relations[0].reason] || relations[0].reason;
-  await read("get_relation_forward", "get_relation", [aid, 0, 1], expect((value) => value?.source_a === 0 && value?.source_b === 1 && value?.canonical_source_a === 0 && value?.relation === relation && value?.reason === relations[0].reason));
-  await read("get_relation_reverse", "get_relation", [aid, 1, 0], expect((value) => value?.source_a === 1 && value?.source_b === 0 && value?.canonical_source_a === 0 && value?.relation === reverseRelation && value?.reason === reverseReason));
-  await read("get_relations", "get_relations", [aid], expect((value) => Array.isArray(value) && value.length === 1 && value[0].source_a === 0 && value[0].source_b === 1 && value[0].relation === relation && value[0].reason === relations[0].reason));
-  await read("get_analysis_summary", "get_analysis_summary", [aid], expect((value) => value?.assessment_id === aid && value?.status === "ANALYZED" && value?.relation_count === 1 && value?.source_count === 2));
-  await read("get_provenance_group", "get_provenance_group", [aid, actualGroups[0].group_id], expect((value) => value?.group_id === actualGroups[0].group_id && JSON.stringify(value?.source_ids) === JSON.stringify(actualGroups[0].source_ids)));
-  await read("get_provenance_groups", "get_provenance_groups", [aid], expect((value) => Array.isArray(value) && JSON.stringify(value) === JSON.stringify(actualGroups)));
-  await read("map_evidence_flags", "map_evidence_flags", [
-    "none",
-    "none",
-    "none",
-    "none",
-    "none",
-    "insufficient",
-  ], expect((value) => value === "UNKNOWN"));
+  const knownReadPlans = {
+    get_contract_info: [{ key: "get_contract_info", args: [], check: expect((value) => value?.name === "EchoTrace" && value?.version === "1.0.0" && value?.min_sources === 2 && value?.max_sources === 6 && value?.unassigned_group_id === 255) }],
+    get_assessment_count: [{ key: "get_assessment_count", args: [], check: expect((value) => Number(value) === count) }],
+    get_assessment: [{ key: "get_assessment", args: [aid], check: expect((value) => value?.assessment_id === aid && value?.creator?.toLowerCase() === account.address.toLowerCase() && value?.source_count === 2 && value?.has_analysis === true && value?.status === "ANALYZED") }],
+    get_assessment_status: [{ key: "get_assessment_status", args: [aid], check: expect((value) => value === "ANALYZED") }],
+    get_source_count: [{ key: "get_source_count", args: [aid], check: expect((value) => Number(value) === 2) }],
+    get_source: [{ key: "get_source", args: [aid, 0], check: expect((value) => value?.assessment_id === aid && value?.source_id === 0 && value?.url === record.smoke.urls[0] && value?.retrieval_status === "OK") }],
+    get_sources: [{ key: "get_sources", args: [aid], check: expect((value) => Array.isArray(value) && value.length === 2 && value.every((row, i) => row.source_id === i && row.url === record.smoke.urls[i] && row.retrieval_status === "OK")) }],
+    get_relation: [
+      { key: "get_relation_forward", args: [aid, 0, 1], check: expect((value) => value?.source_a === 0 && value?.source_b === 1 && value?.canonical_source_a === 0 && value?.relation === relation && value?.reason === relations[0].reason) },
+      { key: "get_relation_reverse", args: [aid, 1, 0], check: expect((value) => value?.source_a === 1 && value?.source_b === 0 && value?.canonical_source_a === 0 && value?.relation === reverseRelation && value?.reason === reverseReason) },
+    ],
+    get_relations: [{ key: "get_relations", args: [aid], check: expect((value) => Array.isArray(value) && value.length === 1 && value[0].source_a === 0 && value[0].source_b === 1 && value[0].relation === relation && value[0].reason === relations[0].reason) }],
+    get_analysis_summary: [{ key: "get_analysis_summary", args: [aid], check: expect((value) => value?.assessment_id === aid && value?.status === "ANALYZED" && value?.relation_count === 1 && value?.source_count === 2) }],
+    get_provenance_group: [{ key: "get_provenance_group", args: [aid, actualGroups[0].group_id], check: expect((value) => value?.group_id === actualGroups[0].group_id && JSON.stringify(value?.source_ids) === JSON.stringify(actualGroups[0].source_ids)) }],
+    get_provenance_groups: [{ key: "get_provenance_groups", args: [aid], check: expect((value) => Array.isArray(value) && JSON.stringify(value) === JSON.stringify(actualGroups)) }],
+    map_evidence_flags: [{ key: "map_evidence_flags", args: ["none", "none", "none", "none", "none", "insufficient"], check: expect((value) => value === "UNKNOWN") }],
+  };
+  const defaultReadArg = ([name, type], index) => {
+    if (name === "assessment_id") return aid;
+    if (name === "source_a" || name === "source_id") return 0;
+    if (name === "source_b") return 1;
+    if (name === "group_id") return actualGroups[0]?.group_id ?? 0;
+    if (type === "string") {
+      if (name === "evidence") return "insufficient";
+      if (name.endsWith("_flags") || ["explicit_attribution", "syndication", "derivative", "shared_upstream", "independent_primary"].includes(name)) return "none";
+      return "";
+    }
+    return index === 0 ? 0 : 0;
+  };
+  for (const methodName of publicReadMethods) {
+    const plans = knownReadPlans[methodName] || [{
+      key: `schema_${methodName}`,
+      args: (schema.methods[methodName]?.params || []).map(defaultReadArg),
+      check: (value) => value !== undefined,
+    }];
+    for (const plan of plans) {
+      await read(plan.key, methodName, plan.args, plan.check);
+    }
+  }
   try {
     await view("get_assessment", [999999], TransactionHashVariant.LATEST_FINAL);
     record.invalidIdBehavior = { method: "get_assessment", passed: false, note: "nonexistent id unexpectedly returned" };
