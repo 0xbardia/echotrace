@@ -137,12 +137,13 @@ GENVM_VERSION=v0.6.0-rc6 uv tool run --from 'git+https://github.com/genlayerlabs
 GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint check contracts/echotrace.py
 GENVM_VERSION=v0.3.0-rc7 uv run genvm-lint typecheck contracts/echotrace.py
 GENVM_VERSION=v0.6.0-rc6 uv tool run --from 'git+https://github.com/genlayerlabs/genvm-linter@28450e665666300fc648dbe495110dfd0cb6a7b4' genvm-lint check contracts/echotrace_studio_dev.py
+uv run python scripts/verify_contract_equivalence.py
 mkdir -p "$HOME/.cache/gltest-direct"
 cp "$HOME/.cache/genvm-linter/genvm-universal-v0.3.0-rc7.tar.xz" "$HOME/.cache/gltest-direct/"
 uv run pytest -rA
 ```
 
-The cache copy works around `genlayer-test==0.29.2` looking for the former GenVM archive filename. Studionet checks use runner `v0.3.0-rc7`; preview checks use runner `v0.6.0-rc6` with the preview linter pinned to its public RC commit. Both bundles are downloaded before lint so CI does not depend on a prewarmed cache. Python is 3.12; exact test dependencies are locked in `uv.lock`.
+The cache copy works around `genlayer-test==0.29.2` looking for the former GenVM archive filename. Studionet checks use runner `v0.3.0-rc7`; preview checks use runner `v0.6.0-rc6` with the preview linter pinned to its public RC commit. Both bundles are downloaded before lint so CI does not depend on a prewarmed cache. `scripts/verify_contract_equivalence.py` is a narrow source-level check: it normalizes only the five approved stable/RC compatibility regions and rejects any other implementation difference. Python is 3.12; exact test dependencies are locked in `uv.lock`.
 
 The suite covers lifecycle and authorization, URL bounds and parser edge cases, serialization, relation semantics, group derivation, prompt injection, retrieval failures, malformed model output, validator disagreement, and a schema-valid but semantically wrong leader result.
 
@@ -152,7 +153,7 @@ The frozen Studionet source is deployed at `0x17ED3D4Cd4Fa0970F854829299283e6004
 
 Studio development preview uses chain `61997` and `contracts/echotrace_studio_dev.py` (SHA-256 `1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776`). Deployment finalized at `0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F` in transaction `0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e`; schema retrieval and the hosted lifecycle/read certification remain blocked by the canonical RPC's 5000-requests/day quota. See [docs/deployments.md](docs/deployments.md) and the environment records in `deployments/` for the captured results.
 
-The two Studio environments currently require distinct runner pins. Both contract files are in the same audited Git revision and share the provenance algorithm, state layout, validation, and consensus comparison. The environment-specific runner import/base class and nondeterministic entry point mean their source-file SHA-256 values differ. Studionet uses chain 61999 and `https://studio.genlayer.com/api`; Studio development preview uses chain 61997 and `https://studio-dev.genlayer.com/api` and may be reset by its operators.
+The two Studio environments currently require distinct runner pins. Both contract files are in the same audited source revision and the automated `scripts/verify_contract_equivalence.py` check passes after normalizing only the five approved runtime-binding regions. Their physical source-file SHA-256 values remain distinct by design. The release claim is identical EchoTrace V1 application logic, state model, public ABI, provenance semantics, leader/validator algorithms, and decision-bearing consensus rules—not byte-identical source or identical GenLayer runtime internals. Studionet uses chain 61999 and `https://studio.genlayer.com/api`; Studio development preview uses chain 61997 and `https://studio-dev.genlayer.com/api` and may be reset by its operators.
 
 There are 17 public methods: four writes (`create_assessment`, `add_source`, `seal_assessment`, `analyze_sources`) and 13 reads (`get_contract_info`, `get_assessment_count`, `get_assessment`, `get_assessment_status`, `get_source_count`, `get_source`, `get_sources`, `get_relation`, `get_relations`, `get_analysis_summary`, `get_provenance_group`, `get_provenance_groups`, and `map_evidence_flags`). The hosted certification script reads the deployed schema and calls each read at `latest-final`.
 
@@ -197,6 +198,7 @@ docs/security.md
 docs/deployments.md
 deployments/*.json                  Environment deployment and certification evidence
 scripts/exercise.mjs                Deploy and exercise both networks
+scripts/verify_contract_equivalence.py  Narrow cross-runtime source check
 ```
 
 ## Release status

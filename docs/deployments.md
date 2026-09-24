@@ -84,8 +84,17 @@ The matching RC SDK (`genlayer-js@2.0.0-rc.1`) selected `studioDevnet`, verified
 
 The preview manifest records the finalized deployment and the quota-blocked certification attempt. It is not a complete deployment certificate until the schema, lifecycle, and every public read pass.
 
-## Same-source record
+## Cross-runtime source record
 
-Both environment-specific contract files were frozen in source commit `7f0c6d89924662b6660a20d8146099b44d93977f` before deployment. They are not byte-identical: `cmp -s` returns nonzero and the exact unified diff has five mechanical substitutions: the `py-genlayer` dependency hash, a preview-runner module-docstring note, stable wildcard imports versus preview imports, `gl.Contract` versus `gl.contract.Contract`, and `gl.vm.run_nondet_unsafe` versus `gl.vm.run_nondet`. A normalization check replacing exactly those substitutions reports `normalized_line_identical=True`. Therefore the canonical V1 contract logic, storage layout, public ABI, URL/prompt security, consensus decision fields, relation semantics, and read methods are identical; the preview file exists only for the required RC runner compatibility. No contract file has changed since the freeze.
+The authoritative application source is `contracts/echotrace.py` for Studionet. `contracts/echotrace_studio_dev.py` is the required Studio-dev release-candidate runner port; it is not claimed to be byte-identical to the stable file. Both files are frozen in source commit `7f0c6d89924662b6660a20d8146099b44d93977f` and have distinct physical SHA-256 values:
+
+| Deployment | Physical source | Fresh SHA-256 |
+| --- | --- | --- |
+| Studionet | `contracts/echotrace.py` | `df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4` |
+| Studio-dev | `contracts/echotrace_studio_dev.py` | `1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776` |
+
+The exact physical diff is limited to five approved compatibility regions: the `py-genlayer` dependency pin, preview-specific metadata/docstring text, equivalent GenLayer import/binding syntax, the stable/RC `EchoTrace` base-class path, and the runner-specific nondeterministic consensus entry-point name. `scripts/verify_contract_equivalence.py` normalizes only those exact regions, compares the remaining implementation and public/storage surface, and currently returns `PASS`. Its normalized logic digest is `d9ddc58beb58a61f91f1d5680d534cd408cd4fd227c73700e1b954f46a8cf19f`; it is SHA-256 of the verifier's normalized, attribute-free Python AST dump and is not a replacement for either physical source hash.
+
+The release claim is therefore: **EchoTrace V1 uses identical application logic, state model, public ABI, provenance semantics, leader/validator algorithms, and decision-bearing consensus rules across both deployments, with network-specific GenLayer compatibility bindings required by the stable and release-candidate runtimes.** The source check does not claim identical GenLayer runtime internals. Each network must pass its own hosted lifecycle and deployed-schema/read certification.
 
 Official environment and RC compatibility were checked against [GenLayer Networks](https://docs.genlayer.com/developers/networks) and [Consensus v0.6 Migration](https://docs.genlayer.com/developers/consensus-v06-migration). The preview is a separate RC network and may be reset.
