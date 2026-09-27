@@ -149,11 +149,18 @@ The suite covers lifecycle and authorization, URL bounds and parser edge cases, 
 
 ## Deployment
 
-The frozen Studionet source is deployed at `0x17ED3D4Cd4Fa0970F854829299283e6004836237` on chain `61999`, with source SHA-256 `df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4`. Its hosted lifecycle finalized as `SYNDICATED` for two retrieved sources, grouped as one confirmed origin. A complete pass exercised all 13 public reads against finalized state. Later read-only refreshes encountered the shared RPC quota; they made no writes and returned no contradictory values. A nonexistent assessment read was rejected with the Studio wrapper's generic `execution failed` message; the wrapper did not expose the underlying `assessment not found` reason, which direct-mode tests verify.
+EchoTrace v1.0.0 is certified on both hosted GenLayer networks: **Studionet 13/13 PASS** and **Studio-dev 13/13 PASS**. Each has a byte-verified deployed source, an archived deployed schema (4 writes / 13 views), a real finalized lifecycle, and every public read method exercised against finalized state at `latest-final`.
 
-Studio development preview uses chain `61997` and `contracts/echotrace_studio_dev.py` (SHA-256 `1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776`). Deployment finalized at `0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F` in transaction `0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e`; schema retrieval and the hosted lifecycle/read certification remain blocked by the canonical RPC's 5000-requests/day quota. See [docs/deployments.md](docs/deployments.md) and the environment records in `deployments/` for the captured results.
+| Network | Chain | Contract | Deployment transaction | Read methods |
+| --- | --- | --- | --- | --- |
+| Studionet | `61999` | `0x17ED3D4Cd4Fa0970F854829299283e6004836237` | `0xfeab866471129d04840e9dc76e1f5da9a6b6a10536c4870bf39f21f415c4d50f` | 13/13 PASS |
+| Studio-dev (RC) | `61997` | `0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F` | `0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e` | 13/13 PASS |
 
-The two Studio environments currently require distinct runner pins. Both contract files are in the same audited source revision and the automated `scripts/verify_contract_equivalence.py` check passes after normalizing only the five approved runtime-binding regions. Their physical source-file SHA-256 values remain distinct by design. The release claim is identical EchoTrace V1 application logic, state model, public ABI, provenance semantics, leader/validator algorithms, and decision-bearing consensus rules—not byte-identical source or identical GenLayer runtime internals. Studionet uses chain 61999 and `https://studio.genlayer.com/api`; Studio development preview uses chain 61997 and `https://studio-dev.genlayer.com/api` and may be reset by its operators.
+The frozen Studionet source is deployed with source SHA-256 `df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4`. Its hosted lifecycle finalized assessment `0` as `SYNDICATED` for two retrieved sources grouped into one confirmed origin. The 13/13 pass on Studionet is the accepted certification of record; later read-only refresh attempts were throttled by the shared daily RPC quota, which is the absence of new evidence rather than a failure, and the source has not changed since the pass.
+
+The Studio development preview uses `contracts/echotrace_studio_dev.py` (SHA-256 `1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776`). The deployed code is byte-identical to that file, the deployed schema is byte-identical to the archived Studionet schema, and a real lifecycle finalized assessment `1` as `ANALYZED` with relation `SYNDICATED`, both sources retrieved `OK` in one confirmed group. Hosted consensus chose the classification; it was not forced, and `UNKNOWN` would have been equally valid. Because assessment writes are permissionless, the preview lifecycle was driven by a dedicated certification account while the deployment itself was signed by the original deployer; both addresses are recorded in the evidence.
+
+The two Studio environments require distinct runner pins. Both contract files are in the same audited source revision and the automated `scripts/verify_contract_equivalence.py` check passes after normalizing only the five approved runtime-binding regions. Their physical source-file SHA-256 values remain distinct by design. The release claim is identical EchoTrace V1 application logic, state model, public ABI, provenance semantics, leader/validator algorithms, and decision-bearing consensus rules—not byte-identical source or identical GenLayer runtime internals. Studio-dev is an RC network and may be reset by its operators, which would invalidate the preview evidence; Studionet is the stable record.
 
 There are 17 public methods: four writes (`create_assessment`, `add_source`, `seal_assessment`, `analyze_sources`) and 13 reads (`get_contract_info`, `get_assessment_count`, `get_assessment`, `get_assessment_status`, `get_source_count`, `get_source`, `get_sources`, `get_relation`, `get_relations`, `get_analysis_summary`, `get_provenance_group`, `get_provenance_groups`, and `map_evidence_flags`). The hosted certification script reads the deployed schema and calls each read at `latest-final`.
 
@@ -165,7 +172,7 @@ ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studionet
 ECHOTRACE_KEY_FILE=/secure/path/to/key node scripts/exercise.mjs studio-dev
 ```
 
-The script selects the matching stable or RC JavaScript SDK, verifies the RPC chain ID before signing, checks the quoted fee against the deployer balance where the network charges one, waits for finalization, fetches deployed code/schema, and checks every actual read method. It serializes RPC requests at 20-second intervals to stay below the observed shared hourly and daily refill limits. Do not put the key file in the repository.
+The script selects the matching stable or RC JavaScript SDK, verifies the RPC chain ID before signing, reports the quoted fee against the signer balance, waits for finalization, fetches deployed code/schema, and checks every actual read method. On the preview network the quoted fee is advisory rather than a gate, because that network is observed to finalize writes from an unfunded account; the shortfall is logged. It serializes RPC requests at 20-second intervals to stay below the observed shared hourly and daily refill limits. It also records the deployment signer and the certification signer separately, because assessment writes are permissionless. Do not put the key file in the repository.
 
 To retry certification of an already analyzed assessment after an RPC read limit, set `ECHOTRACE_CONTRACT` and `ECHOTRACE_ASSESSMENT_ID` to the deployed address and assessment ID. The runner then reads that finalized lifecycle instead of creating another.
 
@@ -197,10 +204,11 @@ docs/consensus.md
 docs/security.md
 docs/deployments.md
 deployments/*.json                  Environment deployment and certification evidence
+deployments/schema/*.json           Archived deployed schemas, one per network
 scripts/exercise.mjs                Deploy and exercise both networks
 scripts/verify_contract_equivalence.py  Narrow cross-runtime source check
 ```
 
 ## Release status
 
-Version 1.0.0 is the candidate version, not a published release. The GitHub repository has no release tag yet. The public release is withheld until both hosted deployments are finalized and every public read method passes on each.
+Version 1.0.0 is released. Both hosted deployments are certified 13/13, the final release commit is published on `main`, and the `v1.0.0` tag carries the release notes. The Studio development preview is an RC network that GenLayer may reset; the Studionet deployment is the stable record.

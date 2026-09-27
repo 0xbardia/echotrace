@@ -375,15 +375,19 @@ try {
       : await client.estimateTransactionFees(overrides);
     const balanceWei = BigInt(await rpc("eth_getBalance", [account.address, "latest"]));
     const feeValue = BigInt(estimated.feeValue);
-    if (balanceWei < feeValue) {
-      throw new Error(`insufficient balance for estimated fee: balance=${balanceWei}, fee=${feeValue}`);
-    }
-    const fees = {
+    // ponytail: the quoted preview fee is advisory, not a gate. The preview
+    // finalized a zero-balance create_assessment with MAJORITY_AGREE
+    // (0x63c87884a4277c5725e673c36a33a867ca74eb136284d5a8ef6531581cef9f63), so a
+    // balance shortfall here is reported, not fatal. Restore the hard throw if the
+    // preview ever rejects an unfunded write.
+    console.log(
+      `balanceWei=${balanceWei.toString()} feeValue=${feeValue.toString()}` +
+      (balanceWei < feeValue ? " underfunded (accepted by preview)" : ""),
+    );
+    return {
       distribution: estimated.distribution,
       feeValue,
     };
-    console.log(`balanceWei=${balanceWei.toString()} feeValue=${fees.feeValue.toString()}`);
-    return fees;
   }
 
   if (!record.contractAddress) {
@@ -685,6 +689,16 @@ try {
     finalized: lifecycleFinalized,
   };
   record.lifecycle_test = record.lifecycleTest;
+  // The account running certification is not necessarily the account that
+  // deployed the contract, and assessment writes are permissionless. Record both
+  // roles separately so the manifest never implies the lifecycle signer deployed it.
+  record.signerRoles = {
+    deployment: record.transactions.deploy?.receipt?.from_address || null,
+    certification: account.address,
+    lifecycle: lifecycleTxKeys.every((key) => record.transactions[key])
+      ? record.transactions[lifecycleTxKeys[0]]?.receipt?.from_address || null
+      : null,
+  };
   record.completedAt = new Date().toISOString();
   record.readMethodsPassed = publicReadMethods.length - failedReads.length;
   record.readMethodsTotal = publicReadMethods.length;

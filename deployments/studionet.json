@@ -140,7 +140,10 @@
       "get_sources",
       "map_evidence_flags"
     ],
-    "note": "All 13 reads passed in an earlier finalized-state run. A later read-only refresh verified deployed code/schema, then hit the canonical daily quota before its first view call; no source or state changed."
+    "note": "ACCEPTED FINAL CERTIFICATION. All 13 deployed read methods passed against finalized assessment 0 at latest-final. The contract source has not changed since that run (physical SHA-256 df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4, unchanged in commit 8f0eddb and the final release commit), so this run remains the certification of record for v1.0.0. Later read-only refresh attempts were throttled by the shared daily RPC quota (JSON-RPC -32029); a throttled refresh is not a test failure and did not invalidate the completed certification. No write or state change followed the 13/13 pass.",
+    "accepted": true,
+    "source_unchanged_since_pass": true,
+    "invalidated_by_later_quota_errors": false
   },
   "smoke": {
     "urls": [
@@ -425,7 +428,19 @@
     }
   ],
   "completedAt": "2026-09-24T17:50:45.815Z",
-  "refresh_status": "BLOCKED_BY_QUOTA",
-  "refresh_error": "An unknown RPC error occurred.\n\nDetails: Rate limit exceeded: 5000 requests per day\nVersion: viem@2.56.8",
-  "refresh_retry_after_seconds": 13336
+  "superseded_refresh_attempt": {
+    "status": "THROTTLED_NOT_FAILED",
+    "error": "An unknown RPC error occurred.\n\nDetails: Rate limit exceeded: 5000 requests per day\nVersion: viem@2.56.8",
+    "retry_after_seconds": 13336,
+    "note": "A later read-only refresh was throttled by the shared daily RPC quota before completing. It submitted no transaction and changed no state. It does not invalidate the accepted 13/13 certification above; see certification_evidence."
+  },
+  "normalized_logic_sha256": "d9ddc58beb58a61f91f1d5680d534cd408cd4fd227c73700e1b954f46a8cf19f",
+  "equivalence_verifier": "PASS",
+  "physical_source_sha256": "df8b5991e21f7feb4a53e800a5246a117f23ab639ad570c703d48e6a38ef99a4",
+  "schemaCounts": {
+    "writes": 4,
+    "views": 13,
+    "total": 17
+  },
+  "read_methods_note": "Read methods are enumerated from the archived deployed schema for this network, not from a local constant."
 }

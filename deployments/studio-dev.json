@@ -7,13 +7,15 @@
   "chain_id": 61997,
   "rpc": "https://studio-dev.genlayer.com/api",
   "explorer": "https://explorer-studio-dev.genlayer.com",
-  "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+  "deployer": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
   "contractPath": "contracts/echotrace_studio_dev.py",
   "contractSha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
   "contract_source": "contracts/echotrace_studio_dev.py",
   "source_sha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
   "gitCommit": "7f0c6d89924662b6660a20d8146099b44d93977f",
   "git_commit": "7f0c6d89924662b6660a20d8146099b44d93977f",
+  "repositoryCommit": "8f0eddb2b656202aa6e2e0ee68974cdbbf611a4e",
+  "repository_commit": "8f0eddb2b656202aa6e2e0ee68974cdbbf611a4e",
   "sdk": "genlayer-js@2.0.0-rc.1",
   "transactionAbi": "v6",
   "readVariant": "latest-final",
@@ -25,14 +27,29 @@
         "status": "FINALIZED",
         "result": 1,
         "from_address": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F"
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "create_assessment_1": {
+      "hash": "0xa62b9a915f110f46ae092c4b38d5291753b3730061f4f7561aebfe4afab40d82",
+      "functionName": "create_assessment",
+      "args": [
+        "Public article provenance check",
+        "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth."
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
         "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
-        "contract_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
         "votes": {
-          "0x1dA3a7de8EA65A318bf88Eb63d3dC55295Dd257E": "agree",
-          "0x6760cDeC573cf38568C59872ee48B6fED41F8A4c": "agree",
-          "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "idle",
-          "0xA793D9dc0ED9edC1f9F732bB68b5D3AFA934F52D": "agree",
-          "0xcF5Fd792Df0Dc9d297af75c82B4A0011e8FA1A4A": "idle"
+          "0x5A4230B920b18c4AFD3A28F99Eae669B7F2cdC1e": "agree",
+          "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+          "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "idle",
+          "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+          "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "agree"
         },
         "leaders": [
           {
@@ -49,18 +66,744 @@
       },
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE"
+    },
+    "add_source_1_0": {
+      "hash": "0x3416b0db589b384f753c15a2bdbff2daf0eb61f8d302fdbc8491e919bfa94bdc",
+      "functionName": "add_source",
+      "args": [
+        1,
+        "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+        "Tribune Content Agency"
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "votes": {
+          "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+          "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+          "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "idle",
+          "0xa0435f618c1F27B254998018AEa8Da5C77187852": "agree",
+          "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "idle"
+        },
+        "leaders": [
+          {
+            "execution_result": "SUCCESS",
+            "vote": null,
+            "mode": "leader"
+          },
+          {
+            "execution_result": "SUCCESS",
+            "vote": "agree",
+            "mode": "validator"
+          }
+        ]
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "add_source_1_1": {
+      "hash": "0x469338759ed9c3275acd074934181f6d12d506943b67dfcefb106df4ba245a9d",
+      "functionName": "add_source",
+      "args": [
+        1,
+        "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675",
+        "ArcaMax"
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "votes": {
+          "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+          "0xA793D9dc0ED9edC1f9F732bB68b5D3AFA934F52D": "agree",
+          "0xa0435f618c1F27B254998018AEa8Da5C77187852": "idle",
+          "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+          "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+        },
+        "leaders": [
+          {
+            "execution_result": "SUCCESS",
+            "vote": null,
+            "mode": "leader"
+          },
+          {
+            "execution_result": "ERROR",
+            "vote": "idle",
+            "mode": "validator"
+          }
+        ]
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "seal_assessment_1": {
+      "hash": "0x9be74705aa7eb68b70f458e1e0b315418b8411b2fc3c45d4208fa5e0bd82dfa8",
+      "functionName": "seal_assessment",
+      "args": [
+        1
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "votes": {
+          "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "idle",
+          "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+          "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "agree",
+          "0xcF5Fd792Df0Dc9d297af75c82B4A0011e8FA1A4A": "agree",
+          "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+        },
+        "leaders": [
+          {
+            "execution_result": "SUCCESS",
+            "vote": null,
+            "mode": "leader"
+          },
+          {
+            "execution_result": "SUCCESS",
+            "vote": "agree",
+            "mode": "validator"
+          }
+        ]
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
+    },
+    "analyze_sources_1": {
+      "hash": "0xe346fb279a860dbf5904f23b68b413c092815847232b7ddc75416f1661ba0ef2",
+      "functionName": "analyze_sources",
+      "args": [
+        1
+      ],
+      "receipt": {
+        "status": "FINALIZED",
+        "result": 1,
+        "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+        "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+        "votes": {
+          "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "agree",
+          "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+          "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+          "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "idle",
+          "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "agree"
+        },
+        "leaders": [
+          {
+            "execution_result": "SUCCESS",
+            "vote": null,
+            "mode": "leader"
+          },
+          {
+            "execution_result": "SUCCESS",
+            "vote": "agree",
+            "mode": "validator"
+          }
+        ]
+      },
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE"
     }
   },
-  "reads": {},
-  "readMethods": {},
+  "reads": {
+    "get_analysis_summary": {
+      "functionName": "get_analysis_summary",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": {
+        "ambiguous": false,
+        "analysis_revision": 1,
+        "assessment_id": 1,
+        "confirmed_group_count": 1,
+        "has_analysis": true,
+        "relation_count": 1,
+        "source_count": 2,
+        "status": "ANALYZED",
+        "unassigned_source_ids": [],
+        "unresolved_relation_count": 0,
+        "unresolved_source_count": 0
+      }
+    },
+    "get_assessment": {
+      "functionName": "get_assessment",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": {
+        "ambiguous": false,
+        "analysis_revision": 1,
+        "assessment_id": 1,
+        "confirmed_group_count": 1,
+        "context": "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth.",
+        "creator": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+        "has_analysis": true,
+        "source_count": 2,
+        "status": "ANALYZED",
+        "status_code": 2,
+        "title": "Public article provenance check",
+        "unresolved_relation_count": 0,
+        "unresolved_source_count": 0
+      }
+    },
+    "get_assessment_count": {
+      "functionName": "get_assessment_count",
+      "args": [],
+      "ok": true,
+      "value": 2
+    },
+    "get_assessment_status": {
+      "functionName": "get_assessment_status",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": "ANALYZED"
+    },
+    "get_contract_info": {
+      "functionName": "get_contract_info",
+      "args": [],
+      "ok": true,
+      "value": {
+        "analysis": "one-shot-permissionless",
+        "max_independent_jaccard_percent": 45,
+        "max_sources": 6,
+        "max_url_length": 512,
+        "min_sources": 2,
+        "name": "EchoTrace",
+        "relations": "INDEPENDENT,A_DERIVES_FROM_B,B_DERIVES_FROM_A,COMMON_ORIGIN,SYNDICATED,UNKNOWN",
+        "statuses": "DRAFT,SEALED,ANALYZED",
+        "unassigned_group_id": 255,
+        "version": "1.0.0"
+      }
+    },
+    "get_provenance_group": {
+      "functionName": "get_provenance_group",
+      "args": [
+        1,
+        0
+      ],
+      "ok": true,
+      "value": {
+        "assessment_id": 1,
+        "group_id": 0,
+        "size": 2,
+        "source_ids": [
+          0,
+          1
+        ]
+      }
+    },
+    "get_provenance_groups": {
+      "functionName": "get_provenance_groups",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": [
+        {
+          "assessment_id": 1,
+          "group_id": 0,
+          "size": 2,
+          "source_ids": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    "get_relation_forward": {
+      "functionName": "get_relation",
+      "args": [
+        1,
+        0,
+        1
+      ],
+      "ok": true,
+      "value": {
+        "assessment_id": 1,
+        "canonical_source_a": 0,
+        "canonical_source_b": 1,
+        "reason": "syndicated",
+        "relation": "SYNDICATED",
+        "source_a": 0,
+        "source_b": 1
+      }
+    },
+    "get_relation_reverse": {
+      "functionName": "get_relation",
+      "args": [
+        1,
+        1,
+        0
+      ],
+      "ok": true,
+      "value": {
+        "assessment_id": 1,
+        "canonical_source_a": 0,
+        "canonical_source_b": 1,
+        "reason": "syndicated",
+        "relation": "SYNDICATED",
+        "source_a": 1,
+        "source_b": 0
+      }
+    },
+    "get_relations": {
+      "functionName": "get_relations",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": [
+        {
+          "assessment_id": 1,
+          "reason": "syndicated",
+          "relation": "SYNDICATED",
+          "source_a": 0,
+          "source_b": 1
+        }
+      ]
+    },
+    "get_source": {
+      "functionName": "get_source",
+      "args": [
+        1,
+        0
+      ],
+      "ok": true,
+      "value": {
+        "assessment_id": 1,
+        "canonical_url": "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before",
+        "group_assigned": true,
+        "group_id": 0,
+        "label": "Tribune Content Agency",
+        "retrieval_status": "OK",
+        "source_id": 0,
+        "url": "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/"
+      }
+    },
+    "get_source_count": {
+      "functionName": "get_source_count",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": 2
+    },
+    "get_sources": {
+      "functionName": "get_sources",
+      "args": [
+        1
+      ],
+      "ok": true,
+      "value": [
+        {
+          "assessment_id": 1,
+          "canonical_url": "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before",
+          "group_assigned": true,
+          "group_id": 0,
+          "label": "Tribune Content Agency",
+          "retrieval_status": "OK",
+          "source_id": 0,
+          "url": "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/"
+        },
+        {
+          "assessment_id": 1,
+          "canonical_url": "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675",
+          "group_assigned": true,
+          "group_id": 0,
+          "label": "ArcaMax",
+          "retrieval_status": "OK",
+          "source_id": 1,
+          "url": "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675"
+        }
+      ]
+    },
+    "map_evidence_flags": {
+      "functionName": "map_evidence_flags",
+      "args": [
+        "none",
+        "none",
+        "none",
+        "none",
+        "none",
+        "insufficient"
+      ],
+      "ok": true,
+      "value": "UNKNOWN"
+    }
+  },
+  "readMethods": {
+    "get_analysis_summary": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_analysis_summary",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_assessment": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_assessment",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_assessment_count": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_assessment_count",
+          "args": [],
+          "ok": true
+        }
+      ]
+    },
+    "get_assessment_status": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_assessment_status",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_contract_info": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_contract_info",
+          "args": [],
+          "ok": true
+        }
+      ]
+    },
+    "get_provenance_group": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_provenance_group",
+          "args": [
+            1,
+            0
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_provenance_groups": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_provenance_groups",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_relation": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_relation_forward",
+          "args": [
+            1,
+            0,
+            1
+          ],
+          "ok": true
+        },
+        {
+          "key": "get_relation_reverse",
+          "args": [
+            1,
+            1,
+            0
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_relations": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_relations",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_source": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_source",
+          "args": [
+            1,
+            0
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_source_count": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_source_count",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "get_sources": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "get_sources",
+          "args": [
+            1
+          ],
+          "ok": true
+        }
+      ]
+    },
+    "map_evidence_flags": {
+      "ok": true,
+      "calls": [
+        {
+          "key": "map_evidence_flags",
+          "args": [
+            "none",
+            "none",
+            "none",
+            "none",
+            "none",
+            "insufficient"
+          ],
+          "ok": true
+        }
+      ]
+    }
+  },
   "contractAddress": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
   "contract_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
   "deployment_transaction": "0x3031af1cec04bf97cadbe8e528f9d0263d2ab941cd94cd6529e2f3cf28f2193e",
   "finalized": true,
-  "lifecycle_test": null,
-  "read_methods_passed": 0,
-  "read_methods_total": 0,
-  "certification_status": "BLOCKED",
+  "lifecycle_test": {
+    "assessmentId": 1,
+    "status": "ANALYZED",
+    "sourceUrls": [
+      "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+      "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675"
+    ],
+    "relation": "SYNDICATED",
+    "transactions": {
+      "create_assessment_1": {
+        "hash": "0xa62b9a915f110f46ae092c4b38d5291753b3730061f4f7561aebfe4afab40d82",
+        "functionName": "create_assessment",
+        "args": [
+          "Public article provenance check",
+          "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth."
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x5A4230B920b18c4AFD3A28F99Eae669B7F2cdC1e": "agree",
+            "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+            "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "idle",
+            "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+            "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "agree"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "ERROR",
+              "vote": "idle",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "add_source_1_0": {
+        "hash": "0x3416b0db589b384f753c15a2bdbff2daf0eb61f8d302fdbc8491e919bfa94bdc",
+        "functionName": "add_source",
+        "args": [
+          1,
+          "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+          "Tribune Content Agency"
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+            "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "idle",
+            "0xa0435f618c1F27B254998018AEa8Da5C77187852": "agree",
+            "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "add_source_1_1": {
+        "hash": "0x469338759ed9c3275acd074934181f6d12d506943b67dfcefb106df4ba245a9d",
+        "functionName": "add_source",
+        "args": [
+          1,
+          "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675",
+          "ArcaMax"
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xA793D9dc0ED9edC1f9F732bB68b5D3AFA934F52D": "agree",
+            "0xa0435f618c1F27B254998018AEa8Da5C77187852": "idle",
+            "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+            "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "ERROR",
+              "vote": "idle",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "seal_assessment_1": {
+        "hash": "0x9be74705aa7eb68b70f458e1e0b315418b8411b2fc3c45d4208fa5e0bd82dfa8",
+        "functionName": "seal_assessment",
+        "args": [
+          1
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "idle",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+            "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "agree",
+            "0xcF5Fd792Df0Dc9d297af75c82B4A0011e8FA1A4A": "agree",
+            "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "analyze_sources_1": {
+        "hash": "0xe346fb279a860dbf5904f23b68b413c092815847232b7ddc75416f1661ba0ef2",
+        "functionName": "analyze_sources",
+        "args": [
+          1
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "agree",
+            "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "idle",
+            "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "agree"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      }
+    },
+    "finalized": true
+  },
+  "read_methods_passed": 13,
+  "read_methods_total": 13,
+  "certification_status": "PASS",
   "smoke": {
     "urls": [
       "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
@@ -68,21 +811,512 @@
     ],
     "note": "A public Tribune Content Agency article and its ArcaMax published copy. They are used as a real provenance case; hosted consensus determines the stored relation."
   },
+  "assessmentId": 1,
+  "invalidIdBehavior": {
+    "method": "get_assessment",
+    "passed": true,
+    "error": "Missing or invalid parameters.\nDouble check you have provided the correct parameters. | execution failed | Missing or invalid parameters.\nDouble check you have provided the correct parameters.\n\nDetails: execution failed\nVersion: viem@2.56.8",
+    "note": "The hosted read was rejected as an execution failure. Studio wraps the contract UserError; direct-mode tests verify the specific assessment not found reason."
+  },
   "preflight": {
     "rpcChainId": 61997,
     "sdkChainId": 61997,
-    "deployer": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
-    "balanceWei": "0x56bc75e2d63100064",
-    "verifiedAt": "2026-09-24T17:52:43.979Z"
+    "deployer": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+    "balanceWei": "0x110ba1345bcb9",
+    "verifiedAt": "2026-09-27T19:54:56.491Z"
   },
-  "completedAt": "2026-09-24T17:57:44.171Z",
-  "certification_blocker": "gen_getContractSchema failed: {\"code\":-32029,\"message\":\"Rate limit exceeded: 5000 requests per day\",\"data\":{\"bucket\":\"standard\",\"window\":\"day\",\"limit\":5000,\"current\":5000,\"retry_after_seconds\":11228}}",
-  "deployment_certification": {
-    "status": "PASS",
-    "deployment_finalized": true,
-    "schema_retrieved": false,
-    "read_methods_passed": 0,
-    "read_methods_total": 0,
-    "note": "The deployment receipt finalized with MAJORITY_AGREE. The daily quota blocked schema retrieval before lifecycle and read certification."
-  }
+  "schemaReadMethods": [
+    "get_analysis_summary",
+    "get_assessment",
+    "get_assessment_count",
+    "get_assessment_status",
+    "get_contract_info",
+    "get_provenance_group",
+    "get_provenance_groups",
+    "get_relation",
+    "get_relations",
+    "get_source",
+    "get_source_count",
+    "get_sources",
+    "map_evidence_flags"
+  ],
+  "schemaReadMethodCount": 13,
+  "schemaUnexpectedReadMethods": [],
+  "schemaMissingKnownReadMethods": [],
+  "deployedCodeSha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
+  "deployedCodeMatchesSource": true,
+  "schemaPath": "deployments/schema/studio-dev.json",
+  "schemaSha256": "fe30521139bedc6b80b668b77598b9973f9f87be856574189cc1a75776a5bf57",
+  "publicMethods": [
+    {
+      "name": "add_source",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "url",
+          "string"
+        ],
+        [
+          "label",
+          "string"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "analyze_sources",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "null"
+    },
+    {
+      "name": "create_assessment",
+      "readonly": false,
+      "params": [
+        [
+          "title",
+          "string"
+        ],
+        [
+          "context",
+          "string"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "get_analysis_summary",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_assessment",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_assessment_count",
+      "readonly": true,
+      "params": [],
+      "ret": "int"
+    },
+    {
+      "name": "get_assessment_status",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "string"
+    },
+    {
+      "name": "get_contract_info",
+      "readonly": true,
+      "params": [],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_provenance_group",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "group_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_provenance_groups",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "get_relation",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_a",
+          "int"
+        ],
+        [
+          "source_b",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_relations",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "get_source",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ],
+        [
+          "source_id",
+          "int"
+        ]
+      ],
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    {
+      "name": "get_source_count",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "int"
+    },
+    {
+      "name": "get_sources",
+      "readonly": true,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    {
+      "name": "map_evidence_flags",
+      "readonly": true,
+      "params": [
+        [
+          "explicit_attribution",
+          "string"
+        ],
+        [
+          "syndication",
+          "string"
+        ],
+        [
+          "derivative",
+          "string"
+        ],
+        [
+          "shared_upstream",
+          "string"
+        ],
+        [
+          "independent_primary",
+          "string"
+        ],
+        [
+          "evidence",
+          "string"
+        ]
+      ],
+      "ret": "string"
+    },
+    {
+      "name": "seal_assessment",
+      "readonly": false,
+      "params": [
+        [
+          "assessment_id",
+          "int"
+        ]
+      ],
+      "ret": "null"
+    }
+  ],
+  "lifecycleTest": {
+    "assessmentId": 1,
+    "status": "ANALYZED",
+    "sourceUrls": [
+      "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+      "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675"
+    ],
+    "relation": "SYNDICATED",
+    "transactions": {
+      "create_assessment_1": {
+        "hash": "0xa62b9a915f110f46ae092c4b38d5291753b3730061f4f7561aebfe4afab40d82",
+        "functionName": "create_assessment",
+        "args": [
+          "Public article provenance check",
+          "Compare a publicly available article with another publisher's copy. EchoTrace records provenance, not factual truth."
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x5A4230B920b18c4AFD3A28F99Eae669B7F2cdC1e": "agree",
+            "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+            "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "idle",
+            "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+            "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "agree"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "ERROR",
+              "vote": "idle",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "add_source_1_0": {
+        "hash": "0x3416b0db589b384f753c15a2bdbff2daf0eb61f8d302fdbc8491e919bfa94bdc",
+        "functionName": "add_source",
+        "args": [
+          1,
+          "https://tribunecontentagency.com/article/taking-the-kids-ready-to-travel-like-never-before/",
+          "Tribune Content Agency"
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+            "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "idle",
+            "0xa0435f618c1F27B254998018AEa8Da5C77187852": "agree",
+            "0xcbC79F96B7A275b23EE64d80a98325107F6E1b77": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "add_source_1_1": {
+        "hash": "0x469338759ed9c3275acd074934181f6d12d506943b67dfcefb106df4ba245a9d",
+        "functionName": "add_source",
+        "args": [
+          1,
+          "https://www.arcamax.com/homeandleisure/travel/takingthekids/s-4280675",
+          "ArcaMax"
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xA793D9dc0ED9edC1f9F732bB68b5D3AFA934F52D": "agree",
+            "0xa0435f618c1F27B254998018AEa8Da5C77187852": "idle",
+            "0xcEf1Baa172d0b4D99Dcc505B36332F26D1088025": "agree",
+            "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "ERROR",
+              "vote": "idle",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "seal_assessment_1": {
+        "hash": "0x9be74705aa7eb68b70f458e1e0b315418b8411b2fc3c45d4208fa5e0bd82dfa8",
+        "functionName": "seal_assessment",
+        "args": [
+          1
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "idle",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "agree",
+            "0xEEcEC5D1E07Ee40f5cb85aF922178Dc01278013C": "agree",
+            "0xcF5Fd792Df0Dc9d297af75c82B4A0011e8FA1A4A": "agree",
+            "0xf13c3DfE38C8E206C33F750C24a1b043b63Cb810": "idle"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      },
+      "analyze_sources_1": {
+        "hash": "0xe346fb279a860dbf5904f23b68b413c092815847232b7ddc75416f1661ba0ef2",
+        "functionName": "analyze_sources",
+        "args": [
+          1
+        ],
+        "receipt": {
+          "status": "FINALIZED",
+          "result": 1,
+          "from_address": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+          "to_address": "0x4Db91B033c269DFCcfdAB666d3d621f5d8Dd2d9F",
+          "votes": {
+            "0x05d8aFc66B515038712537f99cAAEA73d16f0007": "agree",
+            "0x5cDf4BdDeEDa0e32ED596b94f69AcC0FbB57f264": "idle",
+            "0x8142E5D1b04f84c3cD995C25AAe31B31F8e0379E": "agree",
+            "0xE4E106086F167D75E2270fa5f3680f6ac598d179": "idle",
+            "0xE52dDB85587585930b1E5f1Fe88fef21CcA49829": "agree"
+          },
+          "leaders": [
+            {
+              "execution_result": "SUCCESS",
+              "vote": null,
+              "mode": "leader"
+            },
+            {
+              "execution_result": "SUCCESS",
+              "vote": "agree",
+              "mode": "validator"
+            }
+          ]
+        },
+        "status": "FINALIZED",
+        "result": "MAJORITY_AGREE"
+      }
+    },
+    "finalized": true
+  },
+  "completedAt": "2026-09-27T20:19:58.994Z",
+  "readMethodsPassed": 13,
+  "readMethodsTotal": 13,
+  "certificationStatus": "PASS",
+  "failedReads": [],
+  "signerRoles": {
+    "deployment": "0x525D449fd34dcFC6D8c315E6264dE21711bD0415",
+    "certification": "0xb30ECb18C8BB422c587788627f84E406D8652EF0",
+    "lifecycle": "0xb30ECb18C8BB422c587788627f84E406D8652EF0"
+  },
+  "pre_certification_probe": {
+    "note": "Before the release lifecycle, one create_assessment was submitted to confirm the preview accepts a write from an unfunded dedicated certification account. It finalized MAJORITY_AGREE and permanently created assessment 0 with placeholder title/context. The certified lifecycle is assessment 1; assessment 0 remains an empty DRAFT and is not part of the release evidence.",
+    "transaction": "0x63c87884a4277c5725e673c36a33a867ca74eb136284d5a8ef6531581cef9f63",
+    "status": "FINALIZED",
+    "result": "MAJORITY_AGREE",
+    "assessmentId": 0,
+    "title": "probe",
+    "context": "probe"
+  },
+  "normalized_logic_sha256": "d9ddc58beb58a61f91f1d5680d534cd408cd4fd227c73700e1b954f46a8cf19f",
+  "equivalence_verifier": "PASS",
+  "physical_source_sha256": "1f4bcc69c58893a15d38622e0d4f1fa9535328a6a1b5e9c6530fb74ccdaa4776",
+  "schemaCounts": {
+    "writes": 4,
+    "views": 13,
+    "total": 17
+  },
+  "read_methods_note": "Read methods are enumerated from the archived deployed schema for this network, not from a local constant."
 }
